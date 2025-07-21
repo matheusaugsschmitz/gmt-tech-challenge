@@ -39,12 +39,12 @@ public class MockedYouTubeClient {
             )
     );
 
-    // TODO handle non-unique ids in the query list
     public List<YouTubeVideoDto> fetchVideosByIdList(List<String> ids) {
         return ids.stream()
                 .filter(Objects::nonNull)
                 .map(String::trim)
                 .filter(id -> !id.isBlank())
+                .distinct()
                 .map(videos::get)
                 .collect(toList());
     }

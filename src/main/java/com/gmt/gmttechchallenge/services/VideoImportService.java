@@ -30,7 +30,6 @@ public class VideoImportService {
         videosIdPerSource.forEach(this::asyncImportVideo);
     }
 
-    // TODO what about invalid ids?
     @Async
     protected void asyncImportVideo(VideoSource videoSource, List<String> ids){
         VideoSourceInterface videoSourceAdapter = videoSourceInterfaces.stream()

@@ -47,11 +47,11 @@ public class MockedVimeoClient {
             )
     );
 
-    // TODO handle non-unique ids in the query list
     public List<VimeoVideoDto> fetchVideosByIdList(List<Long> ids) {
         return ids.stream()
                 .filter(Objects::nonNull)
                 .filter(id -> id > 0)
+                .distinct()
                 .map(videos::get)
                 .collect(toList());
     }

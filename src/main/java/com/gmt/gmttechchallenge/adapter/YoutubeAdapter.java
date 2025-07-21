@@ -1,14 +1,15 @@
 package com.gmt.gmttechchallenge.adapter;
 
-import com.gmt.gmttechchallenge.domain.VideoMetadata;
-import com.gmt.gmttechchallenge.domain.VideoSource;
 import com.gmt.gmttechchallenge.client.youtube.MockedYouTubeClient;
 import com.gmt.gmttechchallenge.client.youtube.YouTubeVideoDto;
+import com.gmt.gmttechchallenge.domain.VideoMetadata;
+import com.gmt.gmttechchallenge.domain.VideoSource;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.math.BigInteger;
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -22,6 +23,9 @@ public class YoutubeAdapter implements VideoSourceInterface {
 
     @Override
     public List<VideoMetadata> importBatchMetadata(List<String> ids) {
+        if (ids == null || ids.isEmpty())
+            return Collections.emptyList();
+
         List<YouTubeVideoDto> youTubeVideos = youTubeProxy.fetchVideosByIdList(ids);
 
         return youTubeVideos.stream()

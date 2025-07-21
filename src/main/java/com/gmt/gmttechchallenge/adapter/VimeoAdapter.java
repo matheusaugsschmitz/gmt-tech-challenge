@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.math.BigInteger;
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -22,7 +23,15 @@ public class VimeoAdapter implements VideoSourceInterface {
 
     @Override
     public List<VideoMetadata> importBatchMetadata(List<String> ids) {
-        List<VimeoVideoDto> vimeoVideos = vimeoProxy.fetchVideosByIdList(ids.stream().map(Long::parseLong).toList());
+        if (ids == null || ids.isEmpty())
+            return Collections.emptyList();
+
+        List<Long> convertedIdsList = ids.stream()
+                .map(String::trim)
+                .filter(id -> id.matches("^\\d+$"))
+                .map(Long::parseLong)
+                .toList();
+        List<VimeoVideoDto> vimeoVideos = vimeoProxy.fetchVideosByIdList(convertedIdsList);
 
         return vimeoVideos.stream()
                 .map(video -> VideoMetadata.create(
