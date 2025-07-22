@@ -6,15 +6,14 @@ import org.springframework.stereotype.Repository;
 import java.util.*;
 import java.util.function.Predicate;
 
-import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.toList;
 
 @Repository
 public class VideoMetadataRepository {
 
-    private final Map<Integer, VideoMetadata> videoMetadataStorageByID = new HashMap<>();
+    private final Map<UUID, VideoMetadata> videoMetadataStorageByID = new HashMap<>();
 
-    public VideoMetadata findById(Integer id){
+    public VideoMetadata findById(UUID id){
         return videoMetadataStorageByID.get(id);
     }
 

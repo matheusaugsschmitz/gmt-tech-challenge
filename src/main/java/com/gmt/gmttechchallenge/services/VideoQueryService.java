@@ -18,7 +18,7 @@ public class VideoQueryService {
 
     private final VideoMetadataRepository repository;
 
-    public VideoMetadata fetchById(int id) {
+    public VideoMetadata fetchById(UUID id) {
         return repository.findById(id);
     }
 

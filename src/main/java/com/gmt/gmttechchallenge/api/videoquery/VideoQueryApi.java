@@ -21,7 +21,7 @@ public class VideoQueryApi {
     // TODO handle 404
     // TODO validate positive number
     @GetMapping("/videos/{id}")
-    public VideoMetadata fetchById(@PathVariable int id) {
+    public VideoMetadata fetchById(@PathVariable UUID id) {
         return queryService.fetchById(id);
     }
 
