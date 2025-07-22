@@ -1,4 +1,4 @@
-package com.gmt.gmttechchallenge.api;
+package com.gmt.gmttechchallenge.api.videoquery;
 
 import com.gmt.gmttechchallenge.domain.VideoMetadata;
 import com.gmt.gmttechchallenge.domain.VideoSource;

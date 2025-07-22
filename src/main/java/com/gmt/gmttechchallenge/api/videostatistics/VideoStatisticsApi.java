@@ -1,4 +1,4 @@
-package com.gmt.gmttechchallenge.api;
+package com.gmt.gmttechchallenge.api.videostatistics;
 
 import com.gmt.gmttechchallenge.services.VideoStatisticsService;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ public class VideoStatisticsApi {
 
     // TODO handle 404
     @GetMapping("/videos/stats")
-    public List<VideosStatisticsPerSource> fetchAllStatistics() {
+    public List<VideosStatisticsPerSourceResponse> fetchAllStatistics() {
         return service.fetchAllStatistics();
     }
 }
