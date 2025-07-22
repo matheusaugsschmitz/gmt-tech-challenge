@@ -17,9 +17,8 @@ public class VideoMetadataRepository {
         return videoMetadataStorageByID.get(id);
     }
 
-    // TODO: check cast
     public List<VideoMetadata> findAll(){
-        return (List<VideoMetadata>) videoMetadataStorageByID.values();
+        return new ArrayList<>(videoMetadataStorageByID.values());
     }
 
     // TODO: Implement other filters
