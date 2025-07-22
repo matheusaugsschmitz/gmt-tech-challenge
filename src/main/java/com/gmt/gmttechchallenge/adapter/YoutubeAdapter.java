@@ -31,7 +31,7 @@ public class YoutubeAdapter implements VideoSourceInterface {
         return youTubeVideos.stream()
                 .map(video -> VideoMetadata.create(
                         video.id(),
-                        VideoSource.VIMEO,
+                        videoSource,
                         video.snippet().publishedAt(),
                         video.snippet().tags(),
                         new BigInteger(video.statistics().viewCount()),

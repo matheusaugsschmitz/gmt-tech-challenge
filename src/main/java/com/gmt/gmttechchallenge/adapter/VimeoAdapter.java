@@ -17,7 +17,7 @@ import java.util.List;
 public class VimeoAdapter implements VideoSourceInterface {
 
     @Getter
-    private final VideoSource videoSource = VideoSource.YOUTUBE;
+    private final VideoSource videoSource = VideoSource.VIMEO;
 
     private final MockedVimeoClient vimeoProxy;
 
@@ -36,7 +36,7 @@ public class VimeoAdapter implements VideoSourceInterface {
         return vimeoVideos.stream()
                 .map(video -> VideoMetadata.create(
                         String.valueOf(video.id()),
-                        VideoSource.VIMEO,
+                        videoSource,
                         video.createdTime(),
                         video.tags(),
                         BigInteger.valueOf(video.viewCount()),
