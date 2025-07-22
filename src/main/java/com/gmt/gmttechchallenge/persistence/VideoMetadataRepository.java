@@ -4,6 +4,7 @@ import com.gmt.gmttechchallenge.domain.VideoMetadata;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.toList;
@@ -21,15 +22,10 @@ public class VideoMetadataRepository {
         return new ArrayList<>(videoMetadataStorageByID.values());
     }
 
-    // TODO: Implement other filters
-    public List<VideoMetadata> findBy(VideoMetadataFilter filter){
+    public List<VideoMetadata> findBy(Predicate<VideoMetadata> filters){
         return videoMetadataStorageByID.values().stream()
-                .filter(videoMetadata -> {
-                    if(nonNull(filter.getSource()) && !filter.getSource().equals(videoMetadata.source()))
-                        return false;
-
-                    return true;
-                }).collect(toList());
+                .filter(filters)
+                .collect(toList());
     }
 
     public void saveAll(List<VideoMetadata> videosMetadata) {
