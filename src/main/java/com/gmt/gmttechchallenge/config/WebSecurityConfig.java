@@ -1,5 +1,6 @@
 package com.gmt.gmttechchallenge.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,44 +15,28 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static java.util.Arrays.asList;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class WebSecurityConfig {
+
+    private final JWTSecurityFilter jwtSecurityFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
+        return http.csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/auth/login").permitAll()
+                        .requestMatchers("/videos/import").hasRole("ADMIN")
                         .anyRequest().authenticated()
-                );
-
-        return http.build();
-    }
-
-    /*
-        In a real world situation password would never be plain text so besides from needing an extra implementation to
-        have users stored somewhere else, it would be also required to add configuration to use BCrypt for password
-        encryption.
-     */
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails basicUser = User.withDefaultPasswordEncoder()
-                .username("user")
-                .password("password")
-                .roles("USER")
+                )
+                .addFilterBefore(jwtSecurityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
-        UserDetails adminUser = User.withDefaultPasswordEncoder()
-                .username("admin")
-                .password("password")
-                .roles("ADMIN")
-                .build();
-
-        return new InMemoryUserDetailsManager(asList(basicUser, adminUser));
     }
 
     @Bean
