@@ -1,0 +1,297 @@
+openapi: 3.0.3
+info:
+  title: GMT Tech Challenge API
+  version: 1.0.0
+  description: API for managing video metadata and statistics
+
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+tags:
+  - name: Authentication
+    description: Required for interaction with any other endpoint
+  - name: Video Import API
+    description: Admin-exclusive API intended to import metadata from external sources such as YouTube and Vimeo
+  - name: Video Metadata Search API
+    description: API for querying pre-imported video metadata
+  - name: Video Analytics API
+    description: API for fetching statistics
+paths:
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: Authenticate user
+      description: Authenticate user and receive JWT token
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Credentials'
+      responses:
+        '200':
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '403':
+          description: Authentication failed
+  /videos/stats:
+    get:
+      tags:
+        - Video Analytics API
+      summary: Fetch statistics for all videos
+      description: Retrieves statistical information about videos grouped by source
+      operationId: fetchAllStatistics
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VideosStatisticsPerSourceResponse'
+        '403':
+          description: Auth token missing or invalid
+
+  /videos/import:
+    post:
+      tags:
+        - Video Import API
+      summary: Import video metadata
+      description: Import metadata for one or more videos
+      operationId: importVideos
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VideosImportRequest'
+      responses:
+        '200':
+          description: Videos imported successfully
+        '403':
+          description: Auth token missing or invalid
+
+  /videos/{id}:
+    get:
+      tags:
+        - Video Metadata Search API
+      summary: Fetch video by ID
+      description: Retrieve video metadata by its internal ID
+      operationId: fetchById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Internal ID of the video
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VideoMetadata'
+        '403':
+          description: Auth token missing or invalid
+        '404':
+          description: Video not found
+
+  /videos/{source}/{id}:
+    get:
+      tags:
+        - Video Metadata Search API
+      summary: Fetch video by source and source ID
+      description: Retrieve video metadata using source and its original ID
+      operationId: fetchBySourceId
+      parameters:
+        - name: source
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/VideoSource'
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Original ID from the source platform
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VideoMetadata'
+        '403':
+          description: Auth token missing or invalid
+        '404':
+          description: Video not found
+
+  /videos:
+    get:
+      tags:
+        - Video Metadata Search API
+      summary: Fetch videos by filter
+      description: Retrieve videos using advanced filtering options
+      operationId: fetchByFilter
+      parameters:
+        - name: source
+          in: query
+          schema:
+            $ref: '#/components/schemas/VideoSource'
+        - name: sourceId
+          in: query
+          schema:
+            type: string
+          description: Original ID from the source platform
+        - name: uploadDate
+          in: query
+          schema:
+            type: string
+            format: date
+          description: Date of upload of the video in the source platform
+        - name: minDurationMs
+          in: query
+          schema:
+            type: integer
+            format: int64
+          description: Minimum duration time of the video in Miliseconds
+        - name: maxDurationMs
+          in: query
+          schema:
+            type: integer
+            format: int64
+          description: Maximum duration time of the video in Miliseconds
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VideoMetadata'
+        '403':
+          description: Auth token missing or invalid
+
+components:
+  schemas:
+    VideoSource:
+      type: string
+      enum: [YOUTUBE, VIMEO]
+
+    Credentials:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+          format: password
+
+    LoginResponse:
+      type: object
+      required:
+        - accessToken
+      properties:
+        accessToken:
+          type: string
+          description: JWT authentication token
+
+    VideosStatisticsPerSourceResponse:
+      type: object
+      description: Statistical information about videos grouped by source
+      properties:
+        source:
+          $ref: '#/components/schemas/VideoSource'
+        titalVideosImported:
+          type: integer
+          format: int32
+          minimum: 0
+          example: 17
+        averageDuration:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 1800000
+
+    VideoIdentifier:
+      type: object
+      description: Request object for importing video metadata
+      properties:
+        videoId:
+          type: string
+        source:
+          $ref: '#/components/schemas/VideoSource'
+
+    VideosImportRequest:
+      type: object
+      description: Request object for importing video metadata
+      properties:
+        videoIdentifiers:
+          type: array
+          items:
+            $ref: '#/components/schemas/VideoIdentifier'
+
+    VideoMetadata:
+      type: object
+      description: Video metadata information
+      required:
+        - id
+        - sourceId
+        - source
+        - publishedAt
+        - tags
+        - viewCount
+        - channelTittle
+        - durationMs
+      properties:
+        id:
+          type: string
+          format: uuid
+        sourceId:
+          type: string
+        source:
+          $ref: '#/components/schemas/VideoIdentifier'
+        publishedAt:
+          type: string
+          format: date-time
+        tags:
+          type: array
+          items:
+            type: string
+        viewCount:
+          type: integer
+          format: int64
+          minimum: 0
+        channelTitle:
+          type: string
+        durationMs:
+          type: integer
+          format: int64
+          example: 1800000
+          minimum: 0
+
+    FetchVideosFilterRequest:
+      type: object
+      description: Filter criteria for video search
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - bearerAuth: []
