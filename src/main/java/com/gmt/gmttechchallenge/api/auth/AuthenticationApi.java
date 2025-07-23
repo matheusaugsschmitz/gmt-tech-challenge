@@ -20,13 +20,11 @@ public class AuthenticationApi {
     //TOOD add @Valid jakarta
     @PostMapping("/login")
     @ResponseStatus(code = HttpStatus.OK)
-    public LoginResponse login(@RequestBody Credentials credentials){
+    public LoginResponse login(@RequestBody Credentials credentials) {
         var authenticationToken = new UsernamePasswordAuthenticationToken(credentials.username(), credentials.password());
         Authentication auth = authenticationManager.authenticate(authenticationToken);
-        String token = tokenService.generateToken((UserDetails)auth.getPrincipal());
+        String token = tokenService.generateToken((UserDetails) auth.getPrincipal());
         return new LoginResponse(token);
     }
 
-    // TODO maybe move this one out
-    public record Credentials(String username, String password){}
 }
