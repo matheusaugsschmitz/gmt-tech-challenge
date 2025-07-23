@@ -1,4 +1,6 @@
 package com.gmt.gmttechchallenge.api.auth;
 
-public record Credentials(String username, String password) {
+import jakarta.validation.constraints.NotBlank;
+
+public record Credentials(@NotBlank String username, @NotBlank String password) {
 }

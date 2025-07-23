@@ -19,7 +19,6 @@ public class VideoQueryApi {
 
     private final VideoQueryService queryService;
 
-    // TODO validate positive number
     @GetMapping("/videos/{id}")
     public ResponseEntity<VideoMetadata> fetchById(@PathVariable UUID id) {
         return queryService.fetchById(id)
