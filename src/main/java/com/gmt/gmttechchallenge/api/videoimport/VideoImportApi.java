@@ -1,6 +1,7 @@
 package com.gmt.gmttechchallenge.api.videoimport;
 
 import com.gmt.gmttechchallenge.services.VideoImportService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,9 +13,8 @@ public class VideoImportApi {
 
     private final VideoImportService videoImportService;
 
-    // TODO add spring validation
     @PostMapping("/videos/import")
-    void importVideos(@RequestBody VideosImportRequest videos){
+    void importVideos(@RequestBody @Valid VideosImportRequest videos){
         videoImportService.importVideoMetadata(videos);
     }
 }

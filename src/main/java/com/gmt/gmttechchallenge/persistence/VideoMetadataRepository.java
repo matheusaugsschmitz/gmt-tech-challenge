@@ -13,8 +13,8 @@ public class VideoMetadataRepository {
 
     private final Map<UUID, VideoMetadata> videoMetadataStorageByID = new HashMap<>();
 
-    public VideoMetadata findById(UUID id){
-        return videoMetadataStorageByID.get(id);
+    public Optional<VideoMetadata> findById(UUID id){
+        return Optional.ofNullable(videoMetadataStorageByID.get(id));
     }
 
     public List<VideoMetadata> findAll(){

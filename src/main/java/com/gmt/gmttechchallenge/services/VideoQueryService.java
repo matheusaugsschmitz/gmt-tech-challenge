@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static java.util.Objects.nonNull;
@@ -18,11 +19,11 @@ public class VideoQueryService {
 
     private final VideoMetadataRepository repository;
 
-    public VideoMetadata fetchById(UUID id) {
+    public Optional<VideoMetadata> fetchById(UUID id) {
         return repository.findById(id);
     }
 
-    public VideoMetadata fetchBySourceId(VideoSource source, String id) {
+    public Optional<VideoMetadata> fetchBySourceId(VideoSource source, String id) {
         return fetchById(VideoMetadata.generateId(id, source));
     }
 
