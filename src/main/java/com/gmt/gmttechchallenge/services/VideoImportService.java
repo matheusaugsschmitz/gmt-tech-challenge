@@ -1,6 +1,6 @@
 package com.gmt.gmttechchallenge.services;
 
-import com.gmt.gmttechchallenge.api.VideosImport;
+import com.gmt.gmttechchallenge.api.videoimport.VideosImportRequest;
 import com.gmt.gmttechchallenge.domain.VideoMetadata;
 import com.gmt.gmttechchallenge.domain.VideoSource;
 import com.gmt.gmttechchallenge.persistence.VideoMetadataRepository;
@@ -23,9 +23,9 @@ public class VideoImportService {
 
     private final List<VideoSourceInterface> videoSourceInterfaces;
 
-    public void importVideoMetadata(VideosImport videos) {
+    public void importVideoMetadata(VideosImportRequest videos) {
         Map<VideoSource, List<String>> videosIdPerSource = videos.videoIdentifiers().stream()
-                .collect(groupingBy(VideosImport.VideoIdentifier::source, mapping(VideosImport.VideoIdentifier::videoId, Collectors.toList())));
+                .collect(groupingBy(VideosImportRequest.VideoIdentifier::source, mapping(VideosImportRequest.VideoIdentifier::videoId, Collectors.toList())));
 
         videosIdPerSource.forEach(this::asyncImportVideo);
     }
