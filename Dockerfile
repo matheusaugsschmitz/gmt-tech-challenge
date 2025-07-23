@@ -4,7 +4,7 @@ FROM openjdk:24
 WORKDIR /app
 
 # Copying JAR file
-COPY target/gmt-tech-challenge.jar /app/gmt-tech-challenge.jar
+COPY build/libs/gmt-tech-challenge-0.0.1-SNAPSHOT-plain.jar /app/gmt-tech-challenge.jar
 
 # Expose port 8080 for HTTP traffic
 EXPOSE 8080
