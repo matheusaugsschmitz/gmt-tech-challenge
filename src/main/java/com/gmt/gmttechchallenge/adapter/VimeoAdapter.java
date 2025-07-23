@@ -31,6 +31,10 @@ public class VimeoAdapter implements VideoSourceInterface {
                 .filter(id -> id.matches("^\\d+$"))
                 .map(Long::parseLong)
                 .toList();
+
+        if (convertedIdsList.isEmpty())
+            return Collections.emptyList();
+
         List<VimeoVideoDto> vimeoVideos = vimeoProxy.fetchVideosByIdList(convertedIdsList);
 
         return vimeoVideos.stream()
