@@ -3,6 +3,7 @@ package com.gmt.gmttechchallenge.services;
 import com.gmt.gmttechchallenge.api.videoimport.VideosImportRequest;
 import com.gmt.gmttechchallenge.domain.VideoMetadata;
 import com.gmt.gmttechchallenge.domain.VideoSource;
+import com.gmt.gmttechchallenge.exception.ResourceNotFoundException;
 import com.gmt.gmttechchallenge.persistence.VideoMetadataRepository;
 import com.gmt.gmttechchallenge.adapter.VideoSourceInterface;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +36,7 @@ public class VideoImportService {
         VideoSourceInterface videoSourceAdapter = videoSourceInterfaces.stream()
                 .filter(videoSourceInterface -> videoSourceInterface.getVideoSource().equals(videoSource))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("something something something"));
+                .orElseThrow(() -> new ResourceNotFoundException("Video source not found: " + videoSource));
 
         List<VideoMetadata> videosMetadata = videoSourceAdapter.importBatchMetadata(ids);
         videoMetadataRepository.saveAll(videosMetadata);
