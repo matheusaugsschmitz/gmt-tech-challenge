@@ -30,7 +30,7 @@ public class VideoStatisticsService {
 
         List<VideosStatisticsPerSourceResponse> statistics = new ArrayList<>();
         videosPerSource.forEach((key, value) -> {
-            double averageDuration = value.stream()
+            long averageDuration = (long) value.stream()
                     .mapToLong(VideoMetadata::durationMs)
                     .average()
                     .orElse(0.0);

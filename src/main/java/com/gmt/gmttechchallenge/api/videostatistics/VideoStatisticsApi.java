@@ -13,7 +13,6 @@ public class VideoStatisticsApi {
 
     private final VideoStatisticsService service;
 
-    // TODO handle 404
     @GetMapping("/videos/stats")
     public List<VideosStatisticsPerSourceResponse> fetchAllStatistics() {
         return service.fetchAllStatistics();
