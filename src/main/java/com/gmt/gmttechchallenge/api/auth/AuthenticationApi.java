@@ -10,15 +10,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthenticationApi {
 
     private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
 
-    //TOOD add @Valid jakarta
-    @PostMapping("/login")
+    //TODO add @Valid jakarta
+    @PostMapping("/auth/login")
     @ResponseStatus(code = HttpStatus.OK)
     public LoginResponse login(@RequestBody Credentials credentials) {
         var authenticationToken = new UsernamePasswordAuthenticationToken(credentials.username(), credentials.password());
