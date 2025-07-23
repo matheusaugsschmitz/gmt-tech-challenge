@@ -16,13 +16,16 @@ import java.time.ZoneOffset;
 @Service
 public class TokenService {
 
+    @Value("${security.jwt-token.issuer}")
+    private String jwtIssuer;
+
     @Value("${security.jwt-token.secret}")
     private String jwtSecret;
 
     public String generateToken(UserDetails userDetails) {
         try {
             return JWT.create()
-                    .withIssuer("gmt-test-api")
+                    .withIssuer(jwtIssuer)
                     .withSubject(userDetails.getUsername())
                     .withExpiresAt(LocalDateTime.now().plusHours(1).atZone(ZoneId.systemDefault()).toInstant())
                     .sign(Algorithm.HMAC256(jwtSecret));
@@ -34,7 +37,7 @@ public class TokenService {
     public String validateToken(String token) {
         try {
             return JWT.require(Algorithm.HMAC256(jwtSecret))
-                    .withIssuer("gmt-test-api")
+                    .withIssuer(jwtIssuer)
                     .build()
                     .verify(token)
                     .getSubject();
