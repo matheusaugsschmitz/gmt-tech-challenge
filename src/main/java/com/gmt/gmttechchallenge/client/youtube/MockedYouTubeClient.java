@@ -3,6 +3,7 @@ package com.gmt.gmttechchallenge.client.youtube;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -40,6 +41,9 @@ public class MockedYouTubeClient {
     );
 
     public List<YouTubeVideoDto> fetchVideosByIdList(List<String> ids) {
+        if (ids == null || ids.isEmpty())
+            return Collections.emptyList();
+
         return ids.stream()
                 .filter(Objects::nonNull)
                 .map(String::trim)
