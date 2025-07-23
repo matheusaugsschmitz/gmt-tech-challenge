@@ -9,5 +9,5 @@ public interface VideoSourceInterface {
 
     VideoSource getVideoSource();
 
-    List<VideoMetadata> importBatchMetadata(List<String> ids);
+    List<VideoMetadata> fetchBatchMetadata(List<String> ids);
 }

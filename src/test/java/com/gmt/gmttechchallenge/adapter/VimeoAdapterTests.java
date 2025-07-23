@@ -31,12 +31,12 @@ public class VimeoAdapterTests {
     private MockedVimeoClient vimeoClient;
 
     @Test
-    void testImportBatchMetadata_handleEmptyIdList(){
+    void testFetchBatchMetadata_handleEmptyIdList(){
         // arrange
         List<String> ids = new ArrayList<>();
 
         // act
-        List<VideoMetadata> response = vimeoAdapter.importBatchMetadata(ids);
+        List<VideoMetadata> response = vimeoAdapter.fetchBatchMetadata(ids);
 
         // assert
         assertTrue(response.isEmpty());
@@ -44,13 +44,13 @@ public class VimeoAdapterTests {
     }
 
     @Test
-    void testImportBatchMetadata_handleInvalidIds(){
+    void testFetchBatchMetadata_handleInvalidIds(){
         // arrange
         List<String> ids = new ArrayList<>();
         ids.add("abc");
 
         // act
-        List<VideoMetadata> response = vimeoAdapter.importBatchMetadata(ids);
+        List<VideoMetadata> response = vimeoAdapter.fetchBatchMetadata(ids);
 
         // assert
         assertTrue(response.isEmpty());
@@ -58,7 +58,7 @@ public class VimeoAdapterTests {
     }
 
     @Test
-    void testImportBatchMetadata_handleEmptyClientResponse(){
+    void testFetchBatchMetadata_handleEmptyClientResponse(){
         // arrange
         List<String> ids = new ArrayList<>();
         ids.add("123");
@@ -66,7 +66,7 @@ public class VimeoAdapterTests {
         when(vimeoClient.fetchVideosByIdList(singletonList(123L))).thenReturn(Collections.emptyList());
 
         // act
-        List<VideoMetadata> response = vimeoAdapter.importBatchMetadata(ids);
+        List<VideoMetadata> response = vimeoAdapter.fetchBatchMetadata(ids);
 
         // assert
         assertTrue(response.isEmpty());
@@ -75,7 +75,7 @@ public class VimeoAdapterTests {
     }
 
     @Test
-    void testImportBatchMetadata_handleHalfVideosFoundBecauseOfInvalidId(){
+    void testFetchBatchMetadata_handleHalfVideosFoundBecauseOfInvalidId(){
         // arrange
         List<String> ids = new ArrayList<>();
         ids.add("abc");
@@ -94,7 +94,7 @@ public class VimeoAdapterTests {
         var expectedUUID = UUID.nameUUIDFromBytes("VIMEO:321".getBytes(StandardCharsets.UTF_8));
 
         // act
-        List<VideoMetadata> response = vimeoAdapter.importBatchMetadata(ids);
+        List<VideoMetadata> response = vimeoAdapter.fetchBatchMetadata(ids);
 
         // assert
         assertEquals(1, response.size(), "Expected 1 video metadata, but got " + response.size());
@@ -113,7 +113,7 @@ public class VimeoAdapterTests {
     }
 
     @Test
-    void testImportBatchMetadata_handleHalfVideosFound(){
+    void testFetchBatchMetadata_handleHalfVideosFound(){
         // arrange
         List<String> ids = new ArrayList<>();
         ids.add("123");
@@ -132,7 +132,7 @@ public class VimeoAdapterTests {
         var expectedUUID = UUID.nameUUIDFromBytes("VIMEO:321".getBytes(StandardCharsets.UTF_8));
 
         // act
-        List<VideoMetadata> response = vimeoAdapter.importBatchMetadata(ids);
+        List<VideoMetadata> response = vimeoAdapter.fetchBatchMetadata(ids);
 
         // assert
         assertEquals(1, response.size(), "Expected 1 video metadata, but got " + response.size());
@@ -151,7 +151,7 @@ public class VimeoAdapterTests {
     }
 
     @Test
-    void testImportBatchMetadata_handleAllVideosFound(){
+    void testFetchBatchMetadata_handleAllVideosFound(){
         // arrange
         List<String> ids = new ArrayList<>();
         long firstVideoSourceId = 123L;
@@ -181,7 +181,7 @@ public class VimeoAdapterTests {
         var secondVideoExpectedUUID = UUID.nameUUIDFromBytes("VIMEO:321".getBytes(StandardCharsets.UTF_8));
 
         // act
-        List<VideoMetadata> response = vimeoAdapter.importBatchMetadata(ids);
+        List<VideoMetadata> response = vimeoAdapter.fetchBatchMetadata(ids);
 
         // assert
         assertEquals(2, response.size(), "Expected 2 videos metadata, but got " + response.size());
