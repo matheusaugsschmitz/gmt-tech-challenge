@@ -38,7 +38,7 @@ public class VideoImportService {
                 .findFirst()
                 .orElseThrow(() -> new ResourceNotFoundException("Video source not found: " + videoSource));
 
-        List<VideoMetadata> videosMetadata = videoSourceAdapter.importBatchMetadata(ids);
+        List<VideoMetadata> videosMetadata = videoSourceAdapter.fetchBatchMetadata(ids);
         videoMetadataRepository.saveAll(videosMetadata);
     }
 }

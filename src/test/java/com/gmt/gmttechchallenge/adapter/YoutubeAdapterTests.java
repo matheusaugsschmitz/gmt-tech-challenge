@@ -33,12 +33,12 @@ public class YoutubeAdapterTests {
     private MockedYouTubeClient youTubeProxy;
 
     @Test
-    void testImportBatchMetadata_handleEmptyIdList(){
+    void testFetchBatchMetadata_handleEmptyIdList(){
         // arrange
         List<String> ids = new ArrayList<>();
 
         // act
-        List<VideoMetadata> response = youtubeAdapter.importBatchMetadata(ids);
+        List<VideoMetadata> response = youtubeAdapter.fetchBatchMetadata(ids);
 
         // assert
         assertTrue(response.isEmpty());
@@ -46,7 +46,7 @@ public class YoutubeAdapterTests {
     }
 
     @Test
-    void testImportBatchMetadata_handleEmptyClientResponse(){
+    void testFetchBatchMetadata_handleEmptyClientResponse(){
         // arrange
         List<String> ids = new ArrayList<>();
         ids.add("123");
@@ -54,7 +54,7 @@ public class YoutubeAdapterTests {
         when(youTubeProxy.fetchVideosByIdList(ids)).thenReturn(Collections.emptyList());
 
         // act
-        List<VideoMetadata> response = youtubeAdapter.importBatchMetadata(ids);
+        List<VideoMetadata> response = youtubeAdapter.fetchBatchMetadata(ids);
 
         // assert
         assertTrue(response.isEmpty());
@@ -63,7 +63,7 @@ public class YoutubeAdapterTests {
     }
 
     @Test
-    void testImportBatchMetadata_handleHalfVideosFound(){
+    void testFetchBatchMetadata_handleHalfVideosFound(){
         // arrange
         List<String> ids = new ArrayList<>();
         ids.add("123");
@@ -88,7 +88,7 @@ public class YoutubeAdapterTests {
         var expectedUUID = UUID.nameUUIDFromBytes("YOUTUBE:321".getBytes(StandardCharsets.UTF_8));
 
         // act
-        List<VideoMetadata> response = youtubeAdapter.importBatchMetadata(ids);
+        List<VideoMetadata> response = youtubeAdapter.fetchBatchMetadata(ids);
 
         // assert
         assertEquals(1, response.size(), "Expected 1 video metadata, but got " + response.size());
@@ -107,7 +107,7 @@ public class YoutubeAdapterTests {
     }
 
     @Test
-    void testImportBatchMetadata_handleAllVideosFound(){
+    void testFetchBatchMetadata_handleAllVideosFound(){
         // arrange
         List<String> ids = new ArrayList<>();
         String firstVideoSourceId = "123";
@@ -145,7 +145,7 @@ public class YoutubeAdapterTests {
         var secondVideoExpectedUUID = UUID.nameUUIDFromBytes("YOUTUBE:321".getBytes(StandardCharsets.UTF_8));
 
         // act
-        List<VideoMetadata> response = youtubeAdapter.importBatchMetadata(ids);
+        List<VideoMetadata> response = youtubeAdapter.fetchBatchMetadata(ids);
 
         // assert
         assertEquals(2, response.size(), "Expected 2 videos metadata, but got " + response.size());

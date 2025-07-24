@@ -22,7 +22,7 @@ public class YoutubeAdapter implements VideoSourceInterface {
     private final MockedYouTubeClient youTubeProxy;
 
     @Override
-    public List<VideoMetadata> importBatchMetadata(List<String> ids) {
+    public List<VideoMetadata> fetchBatchMetadata(List<String> ids) {
         if (ids == null || ids.isEmpty())
             return Collections.emptyList();
 
