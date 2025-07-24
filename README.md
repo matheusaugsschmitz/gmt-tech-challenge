@@ -6,7 +6,7 @@
   - [Run with Docker](#run-with-docker)
 - [How to Run Tests](#how-to-run-tests)
 - [How to use API](#how-to-use-api)
-  - [Get access token]
+  - [Get access token](#get-access-token)
   - [Import videos (example of auth token usage)](#import-videos)
 - [Design Choices](#design-choices)
   - [Auth process](#auth-process)
