@@ -1,6 +1,6 @@
 package com.gmt.gmttechchallenge.api.auth;
 
-import com.gmt.gmttechchallenge.services.TokenService;
+import com.gmt.gmttechchallenge.config.TokenService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

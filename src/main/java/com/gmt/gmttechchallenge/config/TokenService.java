@@ -1,4 +1,4 @@
-package com.gmt.gmttechchallenge.services;
+package com.gmt.gmttechchallenge.config;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

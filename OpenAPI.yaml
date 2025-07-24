@@ -39,6 +39,13 @@ paths:
                 $ref: '#/components/schemas/LoginResponse'
         '403':
           description: Authentication failed
+        '500':
+          description: Unhandled exceptions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
   /videos/stats:
     get:
       tags:
@@ -57,6 +64,12 @@ paths:
                   $ref: '#/components/schemas/VideosStatisticsPerSourceResponse'
         '403':
           description: Auth token missing or invalid
+        '500':
+          description: Unhandled exceptions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
   /videos/import:
     post:
@@ -76,6 +89,18 @@ paths:
           description: Videos imported successfully
         '403':
           description: Auth token missing or invalid
+        '404':
+          description: Video source not found. In case a valid source has no implementation available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Unhandled exceptions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
   /videos/{id}:
     get:
@@ -103,6 +128,12 @@ paths:
           description: Auth token missing or invalid
         '404':
           description: Video not found
+        '500':
+          description: Unhandled exceptions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
   /videos/{source}/{id}:
     get:
@@ -134,6 +165,12 @@ paths:
           description: Auth token missing or invalid
         '404':
           description: Video not found
+        '500':
+          description: Unhandled exceptions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
   /videos:
     get:
@@ -181,6 +218,12 @@ paths:
                   $ref: '#/components/schemas/VideoMetadata'
         '403':
           description: Auth token missing or invalid
+        '500':
+          description: Unhandled exceptions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
 components:
   schemas:
@@ -283,9 +326,24 @@ components:
           example: 1800000
           minimum: 0
 
-    FetchVideosFilterRequest:
+    ErrorResponse:
       type: object
-      description: Filter criteria for video search
+      description: Response object for errors with messages in the body
+      properties:
+        status:
+          type: integer
+          format: int32
+          description: HTTP Status Code
+        message:
+          type: string
+          description: Error Message
+        timestamp:
+          type: integer
+          format: int64
+      required:
+        - status
+        - message
+        - timestamp
 
   securitySchemes:
     bearerAuth:
