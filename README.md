@@ -1,5 +1,6 @@
 ## Table of Contents
 - [About Repository](#about-repository)
+- [About Project](#about-project)
 - [How to Run](#how-to-run)
   - [Build JAR file](#build-jar-file)
   - [Run standalone](#run-standalone)
@@ -7,12 +8,12 @@
 - [How to Run Tests](#how-to-run-tests)
 - [How to use API](#how-to-use-api)
   - [Get access token](#get-access-token)
-  - [Import videos (example of auth token usage)](#import-videos)
+  - [Import videos (example of auth token usage)](#import-videos-example-of-auth-token-usage)
 - [Design Choices](#design-choices)
   - [Auth process](#auth-process)
   - [Video Metadata Persistence](#video-metadata-persistence)
-  - [Client (Mocked external APIs)](#client)
-  - [Adapters (Interactions with Mocked Clients)](#adapters)
+  - [Client (Mocked external APIs)](#client-mocked-external-apis)
+  - [Adapters (Interactions with Mocked Clients)](#adapters-interactions-with-mocked-clients)
   - [Error handling](#error-handling)
 
 ## About Repository
